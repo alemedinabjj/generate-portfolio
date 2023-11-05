@@ -83,7 +83,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const url = new URL('/api/get-portifolio', 'http://localhost:3000')
+  const baseUrl = process.env.VERCEL_URL || 'http://localhost:3000'
+
+  const url = new URL('/api/get-portifolio', baseUrl)
   url.searchParams.append('username', 'alemedinabjj')
 
   const response = await fetch(url.toString())
