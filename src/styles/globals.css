@@ -25,3 +25,91 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.animationStep {
+  animation: animationStep 0.5s ease-in-out;
+}
+
+@keyframes animationStep {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+  50% {
+    opacity: 1;
+    display: block;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes finalStep {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes generationPortfolio {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-0 {
+  animation: animationStep 4s ease-in-out forwards;
+}
+
+.step-1 {
+  animation: animationStep 7s ease-in-out forwards;
+  animation-delay: 4s; /* Atraso igual à duração da animação da etapa 0 */
+  opacity: 0; /* Inicialmente invisível */
+
+}
+
+.step-2 {
+  animation: finalStep 4s ease-in forwards;
+  animation-delay: 10s; /* Atraso igual à soma das durações das animações das etapas 0 e 1 */
+  opacity: 0; /* Inicialmente invisível */
+  visibility: hidden; /* Inicialmente invisível */
+
+}
+
+
+.generate-portfolio-step-1 {
+  animation: generationPortfolio 1s ease-in-out forwards;
+  animation-delay: 1s; /* Atraso igual à soma das durações das animações das etapas 0, 1 e 2 */
+  opacity: 0; /* Inicialmente invisível */
+}
+
+.generate-portfolio-step-2 {
+  animation: generationPortfolio 1s ease-in-out forwards;
+  animation-delay: 3s; /* Atraso igual à soma das durações das animações das etapas 0, 1, 2 e 3 */
+  opacity: 0; /* Inicialmente invisível */
+}
+
+.generate-portfolio-step-3 {
+  animation: generationPortfolio 1s ease-in-out forwards;
+  animation-delay: 5s; /* Atraso igual à soma das durações das animações das etapas 0, 1, 2, 3 e 4 */
+  opacity: 0; /* Inicialmente invisível */
+}
+
+.generate-portfolio-step-4 {
+  animation: generationPortfolio 1s ease-in-out forwards;
+  animation-delay: 7s; /* Atraso igual à soma das durações das animações das etapas 0, 1, 2, 3, 4 e 5 */
+  opacity: 0; /* Inicialmente invisível */
+
+}
+
