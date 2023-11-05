@@ -1,6 +1,7 @@
-import  type { NextApiRequest,  NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 import { z } from 'zod'
 import { prisma } from '@/services/prisma'
+import { NextResponse } from 'next/server'
 
 interface Repo {
   name: string
@@ -106,6 +107,6 @@ export default async function handler(
   } catch (error) {
     console.log(error) // ---> I want to see what this prints server side, in your terminal
     const message = error instanceof Error ? error.message : 'Unexpected Error'
-    return NextApiResponse.json({ message }, { status: 500 })
+    return NextResponse.json({ message }, { status: 500 })
   }
 }
