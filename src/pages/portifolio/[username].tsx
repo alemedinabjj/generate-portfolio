@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next'
 import { z } from 'zod'
+import { getData } from '../api/get-portifolio'
 
 interface PortfolioPageParams {
   name: string
@@ -83,14 +84,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
-  const url = new URL('/api/get-portifolio', 'http://localhost:3000')
-  url.searchParams.append('username', 'alemedinabjj')
+  const data = await getData(username)
 
-  const response = await fetch(url.toString())
-
-  const data = await response.json()
-
-  if (response.status !== 200) {
+  if (!data) {
     return {
       redirect: {
         destination: '/',
