@@ -1,6 +1,23 @@
 import { GetServerSideProps } from 'next'
 import { z } from 'zod'
 import { getData } from '../api/get-portifolio'
+import dynamic from 'next/dynamic'
+import successfully from '../../../public/animations/successfully.json'
+import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
+
+interface Repos {
+  id: number
+  name: string
+  description: string
+  language: string
+  stars: number
+  forks: number
+  link: string
+}
 
 interface PortfolioPageParams {
   name: string
@@ -8,7 +25,7 @@ interface PortfolioPageParams {
   avatar: string
   followers: number
   following: number
-  repos: number
+  repos: Repos[]
   bio: string
   email: string
   mostUsedLanguage: string
@@ -19,9 +36,26 @@ interface PortfolioPageProps {
 }
 
 export default function PortfolioPage({ portfolio }: PortfolioPageProps) {
+  const [hasAnimationPlayed, setHasAnimationPlayed] = useState(true)
+
+  const searchParams = useSearchParams()
+
+  const newCreated = searchParams.get('newCreated')
+
   console.log(portfolio)
+
   return (
     <>
+      {hasAnimationPlayed && newCreated && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <Lottie
+            animationData={successfully}
+            loop={false}
+            className="w-full h-full"
+            onComplete={() => setHasAnimationPlayed(false)}
+          />
+        </div>
+      )}
       <header className="w-full p-4 mx-auto border-b border-gray-800">
         <div className="max-w-[65rem] w-full mx-auto flex items-center justify-between">
           <picture className="flex items-center gap-4">
@@ -62,7 +96,42 @@ export default function PortfolioPage({ portfolio }: PortfolioPageProps) {
         </div>
       </header>
       <div className="max-w-[65rem] w-full p-4 mx-auto">
-        <h1>Portfolio</h1>
+        <h1 className="text-center text-2xl mb-4">My Projects</h1>
+
+        <section className="grid grid-cols md:grid-cols-2 gap-4">
+          {portfolio.repos.map((repo) => (
+            <div key={repo.id} className="w-full">
+              <div className="flex flex-col gap-2 p-4 border border-gray-800 hover:border-gray-600 rounded-md  min-h-[10rem]">
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xl font-bold">{repo.name}</span>
+                    <span className="text-xs text-gray-500">
+                      {repo.language}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">
+                      {repo.stars} stars
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {repo.forks ?? 0} forks
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm">{repo.description}</p>
+
+                <div className="flex items-center justify-between mt-auto">
+                  <a
+                    href={repo.link}
+                    className="text-xs text-gray-500 px-5 py-2 border border-gray-800 rounded"
+                  >
+                    View on Github
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </section>
       </div>
     </>
   )

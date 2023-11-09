@@ -18,6 +18,7 @@ model User {
   bio            String?
   mostUsedLang   String?
   email          String?
+  company        String?
   followersCount Int
   followingCount Int
   repos          Repo[]

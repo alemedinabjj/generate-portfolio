@@ -6,6 +6,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const [loading, setLoading] = useState(false)
+  const [formLoading, setFormLoading] = useState(false)
   const [username, setUsername] = useState('')
 
   const wellcomeTextSteps = [
@@ -23,14 +24,19 @@ export default function Home() {
 
   const router = useRouter()
 
-  async function generatePortfolio() {
+  async function generatePortfolio(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
     if (!username) return
+
+    setFormLoading(true)
 
     const response = await fetch(`/api/github-profile?username=${username}`, {
       method: 'GET',
     })
 
     const data = await response.json()
+
+    setFormLoading(false)
 
     if (response.status !== 200) return
 
@@ -47,7 +53,7 @@ export default function Home() {
 
     setLoading(false)
 
-    router.push(`/portifolio/${username}`)
+    router.push(`/portifolio/${username}?newCreated=true`)
   }
 
   return (
@@ -88,29 +94,57 @@ export default function Home() {
 
             if (index === 2) {
               return (
-                <div
+                <form
                   key={index}
                   className="step-2 flex flex-col items-center gap-2 max-w-xs w-full"
+                  onSubmit={generatePortfolio}
                 >
-                  <label htmlFor="github" className={`step-${index}`}>
-                    {text}
-                  </label>
-                  <input
-                    className="w-full border rounded-md px-2 py-2 text-sm bg-transparent border-green-500 outline-green-500 focus:outline-none focus:shadow-sm focus:shadow-green-500"
-                    type="text"
-                    name="github"
-                    id="github"
-                    placeholder="Github Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                  <button
-                    onClick={() => generatePortfolio()}
-                    className="w-full border border-green-500 rounded-md px-4 py-2 text-sm bg-transparent text-green-500 hover:bg-green-500 hover:text-white transition duration-300"
-                  >
-                    Generate
-                  </button>
-                </div>
+                  <fieldset disabled={formLoading}>
+                    <label htmlFor="github" className={`step-${index}`}>
+                      {text}
+                    </label>
+
+                    <input
+                      className="w-full border rounded-md px-2 py-2 text-sm bg-transparent border-green-500 outline-green-500 focus:outline-none focus:shadow-sm focus:shadow-green-500"
+                      type="text"
+                      name="github"
+                      id="github"
+                      placeholder="Github Username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <button
+                      type="submit"
+                      className="w-full border border-green-500 rounded-md px-4 py-2 text-sm hover:bg-transparent hover:text-green-500 bg-green-500 text-white transition duration-300"
+                    >
+                      {formLoading ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <svg
+                            className="animate-spin w-4 h-4"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8"
+                            ></path>
+                          </svg>
+                          <span>Generating</span>
+                        </div>
+                      ) : (
+                        'Generate'
+                      )}
+                    </button>
+                  </fieldset>
+                </form>
               )
             }
           })}

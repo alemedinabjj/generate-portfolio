@@ -37,6 +37,7 @@ export async function getData(username: string) {
       bio: user.bio,
       email: user.email,
       mostUsedLanguage: user.mostUsedLang,
+      company: user.company,
       repos: reposSorted,
     }
 

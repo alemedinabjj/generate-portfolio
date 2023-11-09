@@ -12,6 +12,7 @@ interface Repo {
   fork: boolean
   stargazers_count: number
   html_url: string
+  clone_url: string
 }
 
 export default async function handler(
@@ -60,6 +61,7 @@ export default async function handler(
         language: repo.language,
         stars: repo.stargazers_count,
         link: repo.html_url,
+        // clone_url: repo.clone_url,
       }
     })
 
@@ -73,6 +75,7 @@ export default async function handler(
       repos: reposMapped,
       email: user.email,
       mostUsedLanguage: reposMapped[0].language,
+      company: user.company,
     }
 
     const userExists = await prisma.user.findUnique({
@@ -96,6 +99,7 @@ export default async function handler(
           bio: userMapped.bio,
           email: userMapped.email,
           mostUsedLang: userMapped.mostUsedLanguage,
+          company: userMapped.company,
           repos: {
             create: userMapped.repos,
           },

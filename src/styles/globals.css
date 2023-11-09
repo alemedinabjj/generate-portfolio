@@ -73,7 +73,7 @@ body {
 }
 
 .step-1 {
-  animation: animationStep 7s ease-in-out forwards;
+  animation: animationStep 6s ease-in-out forwards;
   animation-delay: 4s; /* Atraso igual à duração da animação da etapa 0 */
   opacity: 0; /* Inicialmente invisível */
 
@@ -107,7 +107,7 @@ body {
 }
 
 .generate-portfolio-step-4 {
-  animation: generationPortfolio 1s ease-in-out forwards;
+  animation: generationPortfolio .5s ease-in-out forwards;
   animation-delay: 7s; /* Atraso igual à soma das durações das animações das etapas 0, 1, 2, 3, 4 e 5 */
   opacity: 0; /* Inicialmente invisível */
 
