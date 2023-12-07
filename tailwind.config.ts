@@ -29,6 +29,6 @@ const config: Config = {
       animation: ['responsive', 'motion-safe', 'motion-reduce'],
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 }
 export default config

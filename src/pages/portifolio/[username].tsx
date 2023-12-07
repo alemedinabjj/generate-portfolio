@@ -5,7 +5,8 @@ import dynamic from 'next/dynamic'
 import successfully from '../../../public/animations/successfully.json'
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Link from 'next/link'
+import { CardProject } from '../../components/CardProject'
+import { Card } from '@/components/card'
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
 
@@ -29,6 +30,7 @@ interface PortfolioPageParams {
   bio: string
   email: string
   mostUsedLanguage: string
+  company: string
 }
 
 interface PortfolioPageProps {
@@ -96,42 +98,22 @@ export default function PortfolioPage({ portfolio }: PortfolioPageProps) {
         </div>
       </header>
       <div className="max-w-[65rem] w-full p-4 mx-auto">
-        <h1 className="text-center text-2xl mb-4">My Projects</h1>
+        <h1 className="text-center text-2xl mb-4">
+          Hello, {"I'm "}
+          {portfolio.name} 👋
+        </h1>
+        <h2 className="text-center text-gray-500 text-sm mb-4">
+          My name is {portfolio.name}, {"I'm"} a {portfolio.bio} and {"I'm"}
+          currently working at {portfolio.company}
+        </h2>
 
-        <section className="grid grid-cols md:grid-cols-2 gap-4">
-          {portfolio.repos.map((repo) => (
-            <div key={repo.id} className="w-full">
-              <div className="flex flex-col gap-2 p-4 border border-gray-800 hover:border-gray-600 rounded-md  min-h-[10rem]">
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-col gap-2">
-                    <span className="text-xl font-bold">{repo.name}</span>
-                    <span className="text-xs text-gray-500">
-                      {repo.language}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">
-                      {repo.stars} stars
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      {repo.forks ?? 0} forks
-                    </span>
-                  </div>
-                </div>
-                <p className="text-sm">{repo.description}</p>
+        <div className="flex flex-col gap-4">
+          <p>{"It's my side projects, I hope you enjoy it!"}</p>
 
-                <div className="flex items-center justify-between mt-auto">
-                  <a
-                    href={repo.link}
-                    className="text-xs text-gray-500 px-5 py-2 border border-gray-800 rounded"
-                  >
-                    View on Github
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </section>
+          <section className="w-full">
+            <Card repos={portfolio.repos} />
+          </section>
+        </div>
       </div>
     </>
   )
